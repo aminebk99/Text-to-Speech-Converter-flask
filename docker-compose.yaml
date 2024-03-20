@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    networks:
+      - mynetwork
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+      - FLASK_RUN_HOST=0.0.0.0
+      - POSTGRES_URL=postgres://default:QahsBWGtn4d6@db:5432/verceldb
+      # Add other PostgreSQL environment variables if needed
+    restart: always  # Set the restart policy to always
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: default
+      POSTGRES_PASSWORD: QahsBWGtn4d6
+      POSTGRES_DB: verceldb
+    networks:
+      - mynetwork
+    restart: always  # Set the restart policy to always
+
+networks:
+  mynetwork:
